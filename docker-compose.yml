@@ -1,8 +1,8 @@
-version: "3"
+version: "3.5"
 
 services:
   namenode:
-    image: bde2020/hadoop-namenode:1.1.0-hadoop2.8-java8
+    image: bde2020/hadoop-namenode:latest
     container_name: namenode
     volumes:
       - ./data/namenode:/hadoop/dfs/name
@@ -11,7 +11,7 @@ services:
     env_file:
       - ./hadoop-hive.env
   datanode:
-    image: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8
+    image: bde2020/hadoop-datanode:latest
     container_name: datanode
     volumes:
       - ./data/datanode:/hadoop/dfs/data
@@ -23,7 +23,7 @@ services:
     env_file:
       - ./hadoop-hive.env
     environment:
-      - "HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore"
+      - "HADOOP_CLASSPATH=/opt/hadoop-3.1.1/share/hadoop/tools/lib/*:/opt/hive/hcatalog/share/hcatalog/*"
     ports:
       - "10000:10000"
   hive-metastore:
@@ -33,4 +33,9 @@ services:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
   hive-metastore-postgresql:
-    image: bde2020/hive-metastore-postgresql:2.1.0
+    image: mhessconnectify/hive-metastore-postgresql:latest
+
+networks:
+  default:
+    name: hivenet
+    driver: bridge
