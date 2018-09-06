@@ -6,4 +6,4 @@ hadoop fs -chmod g+w   /tmp
 hadoop fs -chmod g+w   /user/hive/warehouse
 
 cd $HIVE_HOME/bin
-./hiveserver2 --hiveconf hive.server2.enable.doAs=false fs.s3a.access.key=$AWS_ACCESS_KEY_ID fs.s3a.secret.key=$AWS_SECRET_ACCESS_KEY
+./hiveserver2 --hiveconf hive.server2.enable.doAs=false
