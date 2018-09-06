@@ -25,29 +25,35 @@ services:
       - "50075:50075"
   hive-server:
     build: .
+    container_name: hive-server
     env_file:
       - ./hadoop-hive.env
     environment:
-      - "HADOOP_CLASSPATH=/opt/hadoop-3.1.1/share/hadoop/tools/lib/*:/opt/hive/hcatalog/share/hcatalog/*"
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - "HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore"
-      - "SERVICE_PRECONDITION=hive-metastore:9083"
+      HADOOP_CLASSPATH: /opt/hadoop-3.1.1/share/hadoop/tools/lib/*:/opt/hive/hcatalog/share/hcatalog/*
+      CORE_CONF_fs_s3a_access_key: ${AWS_ACCESS_KEY_ID}
+      CORE_CONF_fs_s3a_secret_key: ${AWS_SECRET_ACCESS_KEY}
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: jdbc:postgresql://hive-metastore/metastore
+      SERVICE_PRECONDITION: hive-metastore:9083
     ports:
       - "10000:10000"
   hive-metastore:
     build: .
+    container_name: hive-metastore
     env_file:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
     environment:
       SERVICE_PRECONDITION: "namenode:50070 datanode:50075 hive-metastore-postgresql:5432"
+      CORE_CONF_fs_s3a_access_key: ${AWS_ACCESS_KEY_ID}
+      CORE_CONF_fs_s3a_secret_key: ${AWS_SECRET_ACCESS_KEY}
     ports:
       - "9083:9083"
   hive-metastore-postgresql:
     image: mhessconnectify/hive-metastore-postgresql:latest
+    container_name: hive-metastore-postgresql
   presto-coordinator:
     image: shawnzhu/prestodb:0.181
+    container_name: presto-coordinator
     ports:
       - "8080:8080"
 networks:
