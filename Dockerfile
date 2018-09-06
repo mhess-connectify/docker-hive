@@ -35,8 +35,8 @@ ADD conf/ivysettings.xml $HIVE_HOME/conf
 ADD conf/llap-daemon-log4j2.properties $HIVE_HOME/conf
 
 # Copy custom jars into classpath
-ADD /opt/hadoop-3.1.1/share/hadoop/tools/lib/aws-java-sdk-bundle-1.11.271.jar /opt/hive/lib/aws-java-sdk-bundle-1.11.271.jar
-ADD /opt/hadoop-3.1.1/share/hadoop/tools/lib/hadoop-aws-$HADOOP_VERSION.jar /opt/hive/lib/hadoop-aws-$HADOOP_VERSION.jar
+RUN cp /opt/hadoop-3.1.1/share/hadoop/tools/lib/aws-java-sdk-bundle-1.11.271.jar /opt/hive/lib/aws-java-sdk-bundle-1.11.271.jar
+RUN cp /opt/hadoop-3.1.1/share/hadoop/tools/lib/hadoop-aws-$HADOOP_VERSION.jar /opt/hive/lib/hadoop-aws-$HADOOP_VERSION.jar
 
 COPY startup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/startup.sh
